@@ -47,7 +47,7 @@ const SignIn = () => {
 
 		response.then((body) => {
 			authenticate(body.data);
-			router.replace("/home");
+			router.replace("/research");
 		});
 	}
 

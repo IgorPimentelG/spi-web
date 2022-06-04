@@ -4,7 +4,7 @@ export const Container = styled.button`
 	width: 100%;
 	margin: 20px 0 15px 0;
 	padding: 10px 30px;
-	border-radius: 50px;
+	border-radius: 5px;
 	background-color: ${({theme}) => theme.colors.background.secondary};
 `;
 
