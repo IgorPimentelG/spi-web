@@ -1,11 +1,13 @@
 import styled from "styled-components";
 
-export const Container = styled.button`
+export const Container = styled.button<any>`
 	width: 100%;
-	margin: 20px 0 15px 0;
+	margin: 15px 0 0 0;
 	padding: 10px 30px;
 	border-radius: 5px;
-	background-color: ${({theme}) => theme.colors.background.secondary};
+	background-color: ${({theme, isReverse}) =>  isReverse ?
+		theme.colors.input.error
+		: theme.colors.background.secondary};
 `;
 
 export const Label = styled.span`

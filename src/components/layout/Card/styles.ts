@@ -10,3 +10,8 @@ export const Container = styled.section`
 	background-color: ${({theme}) => theme.colors.background.primary};
 	box-shadow: 5px 5px 40px #EBEBEB;
 `;
+
+export const Title = styled.h1`
+	font-size: 1.1rem;
+	color: ${({theme}) => theme.colors.text.tertiary};
+`;

@@ -1,10 +1,9 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import Head from "next/head";
-import Image from "next/image";
-import Logo from "@assets/images/logo.png";
 import Link from "next/link";
 import { Fragment } from "react";
 import { Card } from "@components/layout";
-import { Button, Input } from "@components/ui";
+import { Button, Input, Error } from "@components/ui";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SignInSchema } from "@shared/schemas/authSchema";
@@ -16,8 +15,6 @@ import {
 	Form,
 	RootContainer,
 	Option,
-	Title,
-	LabelError
 } from "@styles/signIn-styles";
 import { toast } from "react-toastify";
 import { useAppDispatch } from "@store/index";
@@ -38,6 +35,7 @@ const SignIn = () => {
 	const { signIn } = auth();
 
 	function submitHandler(data: Credentials) {
+
 		const response = signIn(data);
 		toast.promise(response, {
 			pending: "Verificando dados...",
@@ -46,7 +44,7 @@ const SignIn = () => {
 		});
 
 		response.then((body) => {
-			authenticate(body.data);
+			dispatch(authenticate(body.data));
 			router.replace("/research");
 		});
 	}
@@ -59,15 +57,6 @@ const SignIn = () => {
 
 			<RootContainer>
 				<Card>
-					<Image
-						src={Logo}
-						width={130}
-						height={130}
-						objectFit="contain"
-					/>
-
-					<Title>Sistema de Pesquisa Institucional</Title>
-
 					<Form>
 						<Input config={{
 							name: "email",
@@ -76,9 +65,7 @@ const SignIn = () => {
 							register
 						}}/>
 						{ errors.email && (
-							<LabelError>
-								{errors.email.message}
-							</LabelError>
+							<Error message={errors.email.message!}/>
 						)}
 
 						<Input config={{
@@ -89,19 +76,17 @@ const SignIn = () => {
 							hasError: !!errors.password
 						}}/>
 						{ errors.password && (
-							<LabelError>
-								{errors.password.message}
-							</LabelError>
+							<Error message={errors.password.message!}/>
 						)}
 
 						<Button label="Acessar" handler={handleSubmit(submitHandler)}/>
 					</Form>
 
 					<ContainerOptions>
-						<Link href="#">
+						<Link href="/regain-access">
 							<Option>Esqueceu sua senha?</Option>
 						</Link>
-						<Link href="#">
+						<Link href="/sign-up">
 							<Option>Solicitar acesso</Option>
 						</Link>
 					</ContainerOptions>

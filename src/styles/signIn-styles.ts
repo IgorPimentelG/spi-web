@@ -23,15 +23,11 @@ export const ContainerOptions = styled.div`
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-`;
-
-export const Title = styled.h1`
-	font-size: 1.1rem;
-	color: ${({theme}) => theme.colors.text.tertiary};
+	margin-top: 15px;
 `;
 
 export const Option = styled.span`
-	margin: 5px 0;
+	margin-top: 10px;
 	cursor: pointer;
 
 	${({theme}) => `
@@ -43,7 +39,3 @@ export const Option = styled.span`
 	`};
 `;
 
-export const LabelError = styled.p`
-	text-align: center;
-	color: ${({theme}) => theme.colors.input.error};
-`;
