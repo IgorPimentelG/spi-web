@@ -1,0 +1,25 @@
+{
+	"campus": [
+		{ "id": 1, "name": "areia" },
+		{ "id": 2, "name": "cabedelo" },
+		{ "id": 3, "name": "cabedelo centro" },
+		{ "id": 4, "name": "cajazeiras" },
+		{ "id": 5, "name": "campina grande" },
+		{ "id": 6, "name": "catolé do rocha" },
+		{ "id": 7, "name": "esperança" },
+		{ "id": 8, "name": "guarabira" },
+		{ "id": 9, "name": "itabaiana" },
+		{ "id": 10, "name": "itaporanga" },
+		{ "id": 11, "name": "joão pessoa" },
+		{ "id": 12, "name": "mangabeira" },
+		{ "id": 13, "name": "monteiro" },
+		{ "id": 14, "name": "patos" },
+		{ "id": 15, "name": "pedras de fogo" },
+		{ "id": 16, "name": "picuí" },
+		{ "id": 17, "name": "princesa isabel" },
+		{ "id": 18, "name": "santa luzia" },
+		{ "id": 19, "name": "santa rita" },
+		{ "id": 20, "name": "soledade" },
+		{ "id": 21, "name": "sousa" }
+	]
+}

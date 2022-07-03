@@ -1,6 +1,7 @@
 /* eslint-disable quotes */
 import Profile from "./Profile";
 import Image from "next/image";
+import Link from "next/link";
 import ImageLogo from "@assets/images/logo.png";
 import { FaUserAlt } from "react-icons/fa";
 import { useAppDispatch } from "@store/index";

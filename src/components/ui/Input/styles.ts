@@ -9,7 +9,7 @@ export const Container = styled.div`
 `;
 
 export const Field = styled.input<any>`
-	padding: 13px 10px;
+	padding: 11px 10px;
 	border: 1px solid;
 	border-radius: 5px;
 	background-color: #FFF;
