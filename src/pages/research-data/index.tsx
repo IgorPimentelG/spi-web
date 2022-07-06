@@ -1,6 +1,6 @@
 import Head from "next/head";
 import IFPB_CAMPI from "@assets/data/ifpb-campi.json";
-import { Menu } from "@components/layout";
+import { DialogUpload, Menu } from "@components/layout";
 import { useForm } from "react-hook-form";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { Button, Input, Select, Title } from "@components/ui";
@@ -19,6 +19,7 @@ import {
 	SubTitle
 } from "@styles/newReserach-styles";
 import { useRouter } from "next/router";
+import React from "react";
 
 const NewResearchPage = () => {
 
@@ -27,7 +28,9 @@ const NewResearchPage = () => {
 	const router = useRouter();
 
 	const { register, handleSubmit, formState: { errors } } = useForm();
+
 	const [ifpbCampus, setIfpbCampus] = useState<Campi[]>([]);
+	const [showDialogUpload, setShowDialogUpload] = useState(false);
 
 	useLayoutEffect(() => {
 		const dataFormatted = IFPB_CAMPI.campus.map((item) => {
@@ -43,88 +46,103 @@ const NewResearchPage = () => {
 		router.back();
 	}
 
+	function handleConfirmUpload() {
+		handleCancelUpload();
+	}
+
+	function handleCancelUpload() {
+		setShowDialogUpload(false);
+	}
+
 	return(
-		<RootContainer>
-			<Head>
-				<title>SPI | Gerar Pesquisa</title>
-			</Head>
+		<React.Fragment>
+			<DialogUpload
+				visible={showDialogUpload}
+				onConfirm={handleConfirmUpload}
+				onCancel={handleCancelUpload}
+			/>
 
-			<Menu/>
+			<RootContainer>
+				<Head>
+					<title>SPI | Gerar Pesquisa</title>
+				</Head>
+				<Menu/>
 
-			<Container>
-				<Header>
-					<div>
-						<Title text="Gerar Pesquisa"/>
-						<SubTitle>Importe os dados necessários</SubTitle>
-					</div>
+				<Container>
+					<Header>
+						<div>
+							<Title text="Gerar Pesquisa"/>
+							<SubTitle>Importe os dados necessários</SubTitle>
+						</div>
 
-					<ContainerOptions>
-						{/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-						<Button label="Processar" handler={() => {}}/>
-						<Space/>
-						<Button label="Cancelar" isReverse handler={goBack}/>
-					</ContainerOptions>
-				</Header>
+						<ContainerOptions>
+							{/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+							<Button label="Processar" handler={() => {}}/>
+							<Space/>
+							<Button label="Cancelar" isReverse handler={goBack}/>
+						</ContainerOptions>
+					</Header>
 
-				<Form>
-					<Grid>
+					<Form>
+						<Grid>
+							<Input config={{
+								register,
+								label: "Código",
+								name: "code",
+								attributes: { type: "number", readOnly: true },
+								hasError: !!errors,
+							}}/>
+
+							<Select
+								label='Campi'
+								placeholder='Selecione o campi'
+								options={ifpbCampus}
+							/>
+
+							<Input config={{
+								register,
+								label: "Início do ciclo",
+								name: "code",
+								hasError: !!errors,
+								attributes: { type: "date" }
+							}}/>
+
+							<Input config={{
+								register,
+								label: "Término do ciclo",
+								name: "code",
+								hasError: !!errors,
+								attributes: { type: "date" }
+							}}/>
+						</Grid>
+
 						<Input config={{
 							register,
-							label: "Código",
+							label: "Status",
 							name: "code",
-							attributes: { type: "number", readyonly: true },
+							attributes: { readOnly: true },
 							hasError: !!errors,
 						}}/>
 
-						<Select
-							label='Campi'
-							placeholder='Selecione o campi'
-							options={ifpbCampus}
-						/>
+						<ContainerUpload>
+							<SubTitle>DADOS SUAP</SubTitle>
+							<ButtonUpload onClick={() => setShowDialogUpload(true)} type="button">
+								<IoDocumentTextOutline color='#FFF'/>
+								<LabelButtonUpload>importar arquivo</LabelButtonUpload>
+							</ButtonUpload>
+						</ContainerUpload>
 
-						<Input config={{
-							register,
-							label: "Início do ciclo",
-							name: "code",
-							hasError: !!errors,
-							attributes: { type: "date" }
-						}}/>
-
-						<Input config={{
-							register,
-							label: "Término do ciclo",
-							name: "code",
-							hasError: !!errors,
-							attributes: { type: "date" }
-						}}/>
-					</Grid>
-
-					<Input config={{
-						register,
-						label: "Status",
-						name: "code",
-						attributes: { readyonly: true },
-						hasError: !!errors,
-					}}/>
-
-					<ContainerUpload>
-						<SubTitle>DADOS SUAP</SubTitle>
-						<ButtonUpload>
-							<IoDocumentTextOutline color='#FFF'/>
-							<LabelButtonUpload>importar arquivo</LabelButtonUpload>
-						</ButtonUpload>
-					</ContainerUpload>
-
-					<ContainerUpload>
-						<SubTitle>DADOS SISTEC</SubTitle>
-						<ButtonUpload reverse>
-							<IoDocumentTextOutline color='#FFF'/>
-							<LabelButtonUpload>importar arquivo</LabelButtonUpload>
-						</ButtonUpload>
-					</ContainerUpload>
-				</Form>
-			</Container>
-		</RootContainer>
+						<ContainerUpload>
+							<SubTitle>DADOS SISTEC</SubTitle>
+							<ButtonUpload reverse onClick={() => setShowDialogUpload(true)} type="button">
+								<IoDocumentTextOutline color='#FFF'/>
+								<LabelButtonUpload>importar arquivo</LabelButtonUpload>
+							</ButtonUpload>
+						</ContainerUpload>
+					</Form>
+				</Container>
+			</RootContainer>
+		</React.Fragment>
 	);
 };
 

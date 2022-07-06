@@ -52,7 +52,6 @@ const HomePage = () => {
 						<TabPanel>
 							<Table/>
 						</TabPanel>
-
 					</Tabs>
 				</ContainerResearch>
 			</Container>
