@@ -1,13 +1,15 @@
+import React from "react";
 import Head from "next/head";
-import IFPB_CAMPI from "@assets/data/ifpb-campi.json";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { GrDocumentCsv } from "react-icons/gr";
 import { DialogUpload, Menu } from "@components/layout";
-import { useForm } from "react-hook-form";
 import { IoDocumentTextOutline } from "react-icons/io5";
-import { Button, Input, Select, Title } from "@components/ui";
-import { useLayoutEffect, useState } from "react";
+import { Button, DisplayInput, Title } from "@components/ui";
 import {
 	ButtonUpload,
 	Container,
+	ContainerButton,
 	ContainerOptions,
 	ContainerUpload,
 	Form,
@@ -17,41 +19,43 @@ import {
 	RootContainer,
 	Space,
 	SubTitle
-} from "@styles/newReserach-styles";
-import { useRouter } from "next/router";
-import React from "react";
+} from "@styles/reserachData-styles";
+import { FileType } from "@shared/model/enum/file";
 
 const NewResearchPage = () => {
 
-	type Campi = { value: string, label: string };
-
 	const router = useRouter();
 
-	const { register, handleSubmit, formState: { errors } } = useForm();
-
-	const [ifpbCampus, setIfpbCampus] = useState<Campi[]>([]);
+	const [fileType, setFileType] = useState<FileType | null>(null);
+	const [suapFile, setSuapFile] = useState<File | null>(null);
+	const [sistecFile, setSistecFile] = useState<File | null>(null);
 	const [showDialogUpload, setShowDialogUpload] = useState(false);
-
-	useLayoutEffect(() => {
-		const dataFormatted = IFPB_CAMPI.campus.map((item) => {
-			return {
-				value: item.name, label: `Campi ${item.name}`
-			};
-		});
-
-		setIfpbCampus(dataFormatted);
-	}, []);
 
 	function goBack() {
 		router.back();
 	}
 
-	function handleConfirmUpload() {
+	function handleConfirmUpload(file: File) {
+		if (fileType === FileType.SISTEC) {
+			setSistecFile(file);
+		} else {
+			setSuapFile(file);
+		}
 		handleCancelUpload();
 	}
 
 	function handleCancelUpload() {
 		setShowDialogUpload(false);
+	}
+
+	function handleUploadSuapData() {
+		setFileType(FileType.SUAP);
+		setShowDialogUpload(true);
+	}
+
+	function handleUploadSistecData() {
+		setFileType(FileType.SISTEC);
+		setShowDialogUpload(true);
 	}
 
 	return(
@@ -60,6 +64,7 @@ const NewResearchPage = () => {
 				visible={showDialogUpload}
 				onConfirm={handleConfirmUpload}
 				onCancel={handleCancelUpload}
+				fileType={fileType}
 			/>
 
 			<RootContainer>
@@ -85,59 +90,36 @@ const NewResearchPage = () => {
 
 					<Form>
 						<Grid>
-							<Input config={{
-								register,
-								label: "Código",
-								name: "code",
-								attributes: { type: "number", readOnly: true },
-								hasError: !!errors,
-							}}/>
-
-							<Select
-								label='Campi'
-								placeholder='Selecione o campi'
-								options={ifpbCampus}
-							/>
-
-							<Input config={{
-								register,
-								label: "Início do ciclo",
-								name: "code",
-								hasError: !!errors,
-								attributes: { type: "date" }
-							}}/>
-
-							<Input config={{
-								register,
-								label: "Término do ciclo",
-								name: "code",
-								hasError: !!errors,
-								attributes: { type: "date" }
-							}}/>
+							<DisplayInput label='Código' value='258373647'/>
+							<DisplayInput label='Campi' value='Monteiro'/>
+							<DisplayInput label='Início do ciclo' value='01/01/2022'/>
+							<DisplayInput label='Término do ciclo' value='01/12/2022'/>
 						</Grid>
 
-						<Input config={{
-							register,
-							label: "Status",
-							name: "code",
-							attributes: { readOnly: true },
-							hasError: !!errors,
-						}}/>
+						<DisplayInput label='Status' value='Atribuída'/>
 
 						<ContainerUpload>
 							<SubTitle>DADOS SUAP</SubTitle>
-							<ButtonUpload onClick={() => setShowDialogUpload(true)} type="button">
-								<IoDocumentTextOutline color='#FFF'/>
-								<LabelButtonUpload>importar arquivo</LabelButtonUpload>
-							</ButtonUpload>
+							<ContainerButton>
+								<ButtonUpload onClick={handleUploadSuapData} type="button">
+									<IoDocumentTextOutline color='#FFF'/>
+									<LabelButtonUpload>importar arquivo</LabelButtonUpload>
+								</ButtonUpload>
+								<Space/>
+								{ !suapFile && <GrDocumentCsv/> }
+							</ContainerButton>
 						</ContainerUpload>
 
 						<ContainerUpload>
 							<SubTitle>DADOS SISTEC</SubTitle>
-							<ButtonUpload reverse onClick={() => setShowDialogUpload(true)} type="button">
-								<IoDocumentTextOutline color='#FFF'/>
-								<LabelButtonUpload>importar arquivo</LabelButtonUpload>
-							</ButtonUpload>
+							<ContainerButton>
+								<ButtonUpload reverse onClick={handleUploadSistecData} type="button">
+									<IoDocumentTextOutline color='#FFF'/>
+									<LabelButtonUpload>importar arquivo</LabelButtonUpload>
+								</ButtonUpload>
+								<Space/>
+								{ !sistecFile && <GrDocumentCsv/> }
+							</ContainerButton>
 						</ContainerUpload>
 					</Form>
 				</Container>

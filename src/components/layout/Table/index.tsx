@@ -1,8 +1,9 @@
 
-import { Column, Container, Row, TitleColumn } from "./styles";
+import Link from "next/link";
+import { FaUpload } from "react-icons/fa";
 import { AiFillEye, } from "react-icons/ai";
 import { BsTrashFill } from "react-icons/bs";
-import { FaUpload } from "react-icons/fa";
+import { Column, Container, ContainerIcon, Row, TitleColumn } from "./styles";
 
 const Table = () => {
 	return(
@@ -22,7 +23,11 @@ const Table = () => {
 				<Row>22/03/2022</Row>
 				<Row>22/04/2022</Row>
 				<Row>
-					<FaUpload style={{ margin: 5}}/>
+					<ContainerIcon>
+						<Link href='/research-data'>
+							<FaUpload style={{ margin: 5}}/>
+						</Link>
+					</ContainerIcon>
 					<AiFillEye style={{ margin: 5}}/>
 					<BsTrashFill style={{ margin: 5}}/>
 				</Row>

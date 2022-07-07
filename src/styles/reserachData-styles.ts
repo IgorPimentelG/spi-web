@@ -61,3 +61,8 @@ export const ButtonUpload = styled.button<any>`
 export const Space = styled.div`
 	margin: 5px;
 `;
+
+export const ContainerButton = styled.div`
+	display: flex;
+	align-items: center;
+`;

@@ -4,16 +4,26 @@ import React, { useEffect, useState } from "react";
 import { FaUpload } from "react-icons/fa";
 import { Button } from "@components/ui";
 import { createPortal } from "react-dom";
-import { RootContainer, Card, ContainerOptions, Space, Label, ButtonUpload } from "./styles";
+import { FileType } from "@shared/model/enum/file";
+import {
+	RootContainer,
+	Card,
+	ContainerOptions,
+	Space,
+	Label,
+	ButtonUpload
+} from "./styles";
 
 const DialogUpload: React.FC<{
 	visible: boolean;
-	onConfirm: () => void;
+	fileType: FileType | null;
+	onConfirm: (file: File) => void;
 	onCancel: () => void;
-}> = ({ visible, onConfirm, onCancel }) => {
+}> = ({ visible, fileType, onConfirm, onCancel }) => {
 
 	const [portal, setPortal] = useState<HTMLElement | null>();
-	const [file, setFile] = useState<File | null>(null);
+	const [suapFile, setSuapFile] = useState<File | null>(null);
+	const [sistecFile, setSistecFile] = useState<File | null>(null);
 
 	useEffect(() => {
 		if (document) {
@@ -23,8 +33,25 @@ const DialogUpload: React.FC<{
 	}, []);
 
 	function onUpload(event: React.ChangeEvent<HTMLInputElement>) {
-		const data = event.target.files![0];
-		setFile(data);
+		const file = event.target.files![0];
+
+		if (fileType === FileType.SUAP) {
+			setSuapFile(file);
+		} else {
+			setSistecFile(file);
+		}
+	}
+
+	function handleConfirm() {
+		let file;
+
+		if (fileType === FileType.SISTEC) {
+			file = sistecFile;
+		} else {
+			file = suapFile;
+		}
+
+		onConfirm(file!);
 	}
 
 	function Dialog() {
@@ -33,14 +60,25 @@ const DialogUpload: React.FC<{
 				<Card>
 
 					<ButtonUpload htmlFor="input-file"><FaUpload size={20}/></ButtonUpload>
-					<input id="input-file" type="file" style={{ visibility: "hidden" }} onChange={onUpload}/>
+					<input
+						id="input-file"
+						type="file"
+						accept='.csv'
+						onChange={onUpload}
+						style={{ visibility: "hidden" }}
+					/>
 
 					<Label>
-						{file ? file.name : "Nenhum arquivo selecionado"}
+						{ fileType === FileType.SISTEC && (
+							sistecFile ? sistecFile.name : "Nenhum arquivo selecionado")
+						}
+						{ fileType === FileType.SUAP && (
+							suapFile ? suapFile.name : "Nenhum arquivo selecionado")
+						}
 					</Label>
 
 					<ContainerOptions>
-						<Button label="Confirmar" handler={onConfirm}/>
+						<Button label="Confirmar" handler={handleConfirm}/>
 						<Space/>
 						<Button label="Cancelar" isReverse handler={onCancel}/>
 					</ContainerOptions>

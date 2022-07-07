@@ -20,3 +20,7 @@ export const Row = styled.td`
 	padding: 10px;
 	border-bottom: 1px solid;
 `;
+
+export const ContainerIcon = styled.span`
+	cursor: pointer;
+`;

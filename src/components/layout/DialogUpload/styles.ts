@@ -34,6 +34,7 @@ export const Space = styled.span`
 
 export const Label = styled.p`
 	margin-top: -15px;
+	text-align: center;
 	font-size: 0.9rem;
 	width: 90%;
 	overflow: hidden;
