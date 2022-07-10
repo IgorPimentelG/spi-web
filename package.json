@@ -11,10 +11,13 @@
   "dependencies": {
     "@hookform/resolvers": "^2.9.0",
     "@reduxjs/toolkit": "^1.8.2",
+    "@types/papaparse": "^5.3.2",
     "axios": "^0.27.2",
+    "iconv-lite": "^0.6.3",
     "next": "12.1.6",
-    "react": "17.1.0",
-    "react-dom": "17.1.0",
+    "papaparse": "^5.3.2",
+    "react": "18.1.0",
+    "react-dom": "18.1.0",
     "react-hook-form": "^7.31.3",
     "react-icons": "^4.4.0",
     "react-redux": "^8.0.2",
@@ -23,6 +26,7 @@
     "react-tabs": "^5.1.0",
     "react-toastify": "^9.0.3",
     "styled-components": "^5.3.5",
+    "utf8": "^3.0.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {
@@ -30,6 +34,7 @@
     "@types/react": "18.0.10",
     "@types/react-dom": "18.0.5",
     "@types/styled-components": "^5.1.25",
+    "@types/utf8": "^3.0.1",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
     "cypress": "^10.0.0",

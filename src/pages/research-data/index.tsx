@@ -3,8 +3,12 @@ import Head from "next/head";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { GrDocumentCsv } from "react-icons/gr";
-import { DialogUpload, Menu } from "@components/layout";
+import { csvToObject } from "@shared/helpers/csv";
+import { FileType } from "@shared/model/enum/file";
 import { IoDocumentTextOutline } from "react-icons/io5";
+import { DialogUpload, Menu } from "@components/layout";
+import { encondingISO } from "@shared/helpers/enconding";
+import { sistecFields, suapFields } from "@shared/helpers/file-model";
 import { Button, DisplayInput, Title } from "@components/ui";
 import {
 	ButtonUpload,
@@ -20,27 +24,31 @@ import {
 	Space,
 	SubTitle
 } from "@styles/reserachData-styles";
-import { FileType } from "@shared/model/enum/file";
 
 const NewResearchPage = () => {
 
 	const router = useRouter();
 
 	const [fileType, setFileType] = useState<FileType | null>(null);
-	const [suapFile, setSuapFile] = useState<File | null>(null);
-	const [sistecFile, setSistecFile] = useState<File | null>(null);
+	const [suapFile, setSuapFile] = useState<string | null>(null);
+	const [sistecFile, setSistecFile] = useState<string | null>(null);
 	const [showDialogUpload, setShowDialogUpload] = useState(false);
 
 	function goBack() {
 		router.back();
 	}
 
-	function handleConfirmUpload(file: File) {
+	async function handleConfirmUpload(file: File) {
+
+		const data = await encondingISO(file);
+
 		if (fileType === FileType.SISTEC) {
-			setSistecFile(file);
+			setSistecFile(data);
 		} else {
-			setSuapFile(file);
+			setSuapFile(data);
 		}
+
+		// Close dialog
 		handleCancelUpload();
 	}
 
@@ -56,6 +64,15 @@ const NewResearchPage = () => {
 	function handleUploadSistecData() {
 		setFileType(FileType.SISTEC);
 		setShowDialogUpload(true);
+	}
+
+	function handleConfirm() {
+		if (sistecFile && suapFile) {
+			const sistecData = csvToObject(sistecFile, sistecFields);
+			const suapData = csvToObject(suapFile, suapFields);
+		}
+
+		router.replace("research");
 	}
 
 	return(
@@ -81,8 +98,7 @@ const NewResearchPage = () => {
 						</div>
 
 						<ContainerOptions>
-							{/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-							<Button label="Processar" handler={() => {}}/>
+							<Button label="Processar" handler={handleConfirm}/>
 							<Space/>
 							<Button label="Cancelar" isReverse handler={goBack}/>
 						</ContainerOptions>

@@ -20,7 +20,7 @@ const HomePage = () => {
 	const router = useRouter();
 
 	function newResearchHandler() {
-		router.push("research-data");
+		//router.push("research-data");
 	}
 
 	return(
